@@ -16,8 +16,7 @@ public class PerformanceGroup {
         double totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.consumer + '\n';
-        Locale locale = new Locale("en", "US");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         for (Performance perf : invoice.performances) {
             Play play = plays.get(perf.playID);
             double thisAmount ;
