@@ -5,14 +5,22 @@ import com.google.common.collect.Maps;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author fynwin@gmail.com
  */
 public class PerformanceGroup {
+    private final ConcurrentMap<String, Play> plays;
 
-    public String statement(Invoice invoice, Map<String, Play> plays) {
+    public PerformanceGroup() {
+        plays = Maps.newConcurrentMap();
+        plays.put("hamlet", new Play("Hamlet", "tragedy"));
+        plays.put("as-like", new Play("As You Like It", "comedy"));
+        plays.put("othello", new Play("Othello", "tragedy"));
+    }
+
+    public String statement(Invoice invoice) {
         double totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.consumer + '\n';
@@ -55,17 +63,11 @@ public class PerformanceGroup {
     }
 
     public static void main(String[] args) {
-        Map<String, Play> plays = Maps.newConcurrentMap();
-        plays.put("hamlet", new Play("Hamlet", "tragedy"));
-        plays.put("as-like", new Play("As You Like It", "comedy"));
-        plays.put("othello", new Play("Othello", "tragedy"));
-
         List<Performance> performances = Lists.newArrayList();
         performances.add(new Performance("hamlet", 55));
         performances.add(new Performance("as-like", 35));
         performances.add(new Performance("othello", 40));
         Invoice invoice = new Invoice("BigCo", performances);
-
-        System.out.println(new PerformanceGroup().statement(invoice, plays));
+        System.out.println(new PerformanceGroup().statement(invoice));
     }
 }
