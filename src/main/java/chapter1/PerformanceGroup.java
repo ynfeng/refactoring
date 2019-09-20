@@ -12,14 +12,14 @@ import java.util.Map;
  */
 public class PerformanceGroup {
 
-    public static String statement(Invoice invoice, Map<String, Play> plays) {
+    public String statement(Invoice invoice, Map<String, Play> plays) {
         double totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.consumer + '\n';
         NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         for (Performance perf : invoice.performances) {
             Play play = plays.get(perf.playID);
-            double thisAmount ;
+            double thisAmount;
             switch (play.type) {
                 case "tragedy":
                     thisAmount = 40000;
@@ -49,7 +49,7 @@ public class PerformanceGroup {
             totalAmount += thisAmount;
         }
 
-        result += "Amount owed is "+fmt.format(totalAmount / 100) + '\n';
+        result += "Amount owed is " + fmt.format(totalAmount / 100) + '\n';
         result += "You earned " + volumeCredits + " credits\n";
         return result;
     }
@@ -66,6 +66,6 @@ public class PerformanceGroup {
         performances.add(new Performance("othello", 40));
         Invoice invoice = new Invoice("BigCo", performances);
 
-        System.out.println(statement(invoice, plays));
+        System.out.println(new PerformanceGroup().statement(invoice, plays));
     }
 }
