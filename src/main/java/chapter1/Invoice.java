@@ -6,11 +6,11 @@ import java.util.List;
  * @author fynwin@gmail.com
  */
 public class Invoice {
-    public final String consumer;
+    public final String costumer;
     public final List<Performance> performances;
 
-    public Invoice(String consumer, List<Performance> performances) {
-        this.consumer = consumer;
+    public Invoice(String costumer, List<Performance> performances) {
+        this.costumer = costumer;
         this.performances = performances;
     }
 }

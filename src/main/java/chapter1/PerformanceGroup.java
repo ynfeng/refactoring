@@ -21,69 +21,24 @@ public class PerformanceGroup {
     }
 
     public String statement(Invoice invoice) {
-        String result = "Statement for " + invoice.consumer + '\n';
-        for (Performance perf : invoice.performances) {
-            result += ' ' + playFor(perf).name + ": " + usd(amountFor(perf)) + " (" + perf.audience + " seats)\n";
-        }
-
-        result += "Amount owed is " + usd(totalAmount(invoice)) + '\n';
-        result += "You earned " + totalVolumeCredits(invoice) + " credits\n";
-        return result;
+        StatementData data = StatementData.createStatementData(plays, invoice);
+        return rederPlainText(data);
     }
 
-    private double totalAmount(Invoice invoice) {
-        double totalAmount = 0;
-        for (Performance perf : invoice.performances) {
-            totalAmount += amountFor(perf);
+    private String rederPlainText(StatementData data) {
+        String result = "Statement for " + data.customer + '\n';
+        for (Performance perf : data.performances) {
+            result += ' ' + perf.play.name + ": " + usd(perf.amount) + " (" + perf.audience + " seats)\n";
         }
-        return totalAmount;
-    }
 
-    private Play playFor(Performance performance) {
-        return plays.get(performance.playID);
-    }
-
-    private double amountFor(Performance performance) {
-        double result;
-        switch (playFor(performance).type) {
-            case "tragedy":
-                result = 40000;
-                if (performance.audience > 30) {
-                    result += 1000 * (performance.audience - 30);
-                }
-                break;
-            case "comedy":
-                result = 30000;
-                if (performance.audience > 20) {
-                    result += 10000 + 500 * (performance.audience - 20);
-                }
-                result += 300 * performance.audience;
-                break;
-            default:
-                throw new IllegalStateException("Unkonwn type:" + playFor(performance).type);
-        }
+        result += "Amount owed is " + usd(data.totalAmount()) + '\n';
+        result += "You earned " + data.totalVolumeCredits() + " credits\n";
         return result;
     }
 
     private String usd(double number) {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         return fmt.format(number / 100);
-    }
-
-    private int totalVolumeCredits(Invoice invoice) {
-        int volumeCredits = 0;
-        for (Performance perf : invoice.performances) {
-            volumeCredits += volumeCreditsFor(perf);
-        }
-        return volumeCredits;
-    }
-
-    private int volumeCreditsFor(Performance performance) {
-        int volumeCredits = Math.max(performance.audience - 30, 0);
-        if ("comedy".equals(playFor(performance).type)) {
-            volumeCredits += Math.floor(performance.audience / 5);
-        }
-        return volumeCredits;
     }
 
     public static void main(String[] args) {
