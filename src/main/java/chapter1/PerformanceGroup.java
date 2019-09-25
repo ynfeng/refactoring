@@ -21,18 +21,18 @@ public class PerformanceGroup {
     }
 
     public String statement(Invoice invoice) {
-        double totalAmount = 0;
         String result = "Statement for " + invoice.consumer + '\n';
         for (Performance perf : invoice.performances) {
             result += ' ' + playFor(perf).name + ": " + usd(amountFor(perf)) + " (" + perf.audience + " seats)\n";
         }
 
-        result += "Amount owed is " + usd(totalAmount(invoice, totalAmount)) + '\n';
+        result += "Amount owed is " + usd(totalAmount(invoice)) + '\n';
         result += "You earned " + totalVolumeCredits(invoice) + " credits\n";
         return result;
     }
 
-    private double totalAmount(Invoice invoice, double totalAmount) {
+    private double totalAmount(Invoice invoice) {
+        double totalAmount = 0;
         for (Performance perf : invoice.performances) {
             totalAmount += amountFor(perf);
         }
