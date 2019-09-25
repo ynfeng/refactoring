@@ -24,14 +24,19 @@ public class PerformanceGroup {
         double totalAmount = 0;
         String result = "Statement for " + invoice.consumer + '\n';
         for (Performance perf : invoice.performances) {
-            double thisAmount = amountFor(perf);
-            result += ' ' + playFor(perf).name + ": " + usd(thisAmount) + " (" + perf.audience + " seats)\n";
-            totalAmount += thisAmount;
+            result += ' ' + playFor(perf).name + ": " + usd(amountFor(perf)) + " (" + perf.audience + " seats)\n";
         }
 
-        result += "Amount owed is " + usd(totalAmount) + '\n';
+        result += "Amount owed is " + usd(totalAmount(invoice, totalAmount)) + '\n';
         result += "You earned " + totalVolumeCredits(invoice) + " credits\n";
         return result;
+    }
+
+    private double totalAmount(Invoice invoice, double totalAmount) {
+        for (Performance perf : invoice.performances) {
+            totalAmount += amountFor(perf);
+        }
+        return totalAmount;
     }
 
     private Play playFor(Performance performance) {
