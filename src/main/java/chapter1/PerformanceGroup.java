@@ -22,16 +22,15 @@ public class PerformanceGroup {
 
     public String statement(Invoice invoice) {
         double totalAmount = 0;
-        int volumeCredits = 0;
         String result = "Statement for " + invoice.consumer + '\n';
         for (Performance perf : invoice.performances) {
             double thisAmount = amountFor(perf);
-            volumeCredits += volumeCreditsFor(perf);
             result += ' ' + playFor(perf).name + ": " + usd(thisAmount) + " (" + perf.audience + " seats)\n";
             totalAmount += thisAmount;
         }
+
         result += "Amount owed is " + usd(totalAmount) + '\n';
-        result += "You earned " + volumeCredits + " credits\n";
+        result += "You earned " + totalVolumeCredits(invoice) + " credits\n";
         return result;
     }
 
@@ -64,6 +63,14 @@ public class PerformanceGroup {
     private String usd(double number) {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         return fmt.format(number / 100);
+    }
+
+    private int totalVolumeCredits(Invoice invoice) {
+        int volumeCredits = 0;
+        for (Performance perf : invoice.performances) {
+            volumeCredits += volumeCreditsFor(perf);
+        }
+        return volumeCredits;
     }
 
     private int volumeCreditsFor(Performance performance) {
