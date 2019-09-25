@@ -24,15 +24,13 @@ public class PerformanceGroup {
         double totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.consumer + '\n';
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         for (Performance perf : invoice.performances) {
             double thisAmount = amountFor(perf);
             volumeCredits += volumeCreditsFor(perf);
-            result += ' ' + playFor(perf).name + ": " + fmt.format(thisAmount / 100) + " (" + perf.audience + " seats)\n";
+            result += ' ' + playFor(perf).name + ": " + usd(thisAmount) + " (" + perf.audience + " seats)\n";
             totalAmount += thisAmount;
         }
-
-        result += "Amount owed is " + fmt.format(totalAmount / 100) + '\n';
+        result += "Amount owed is " + usd(totalAmount) + '\n';
         result += "You earned " + volumeCredits + " credits\n";
         return result;
     }
@@ -61,6 +59,11 @@ public class PerformanceGroup {
                 throw new IllegalStateException("Unkonwn type:" + playFor(performance).type);
         }
         return result;
+    }
+
+    private String usd(double number) {
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+        return fmt.format(number / 100);
     }
 
     private int volumeCreditsFor(Performance performance) {
