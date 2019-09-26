@@ -22,10 +22,33 @@ public class PerformanceGroup {
 
     public String statement(Invoice invoice) {
         StatementData data = StatementData.createStatementData(plays, invoice);
-        return rederPlainText(data);
+        return renderPlainText(data);
     }
 
-    private String rederPlainText(StatementData data) {
+    public String htmlStatement(Invoice invoice) {
+        StatementData data = StatementData.createStatementData(plays, invoice);
+        return renderHtml(data);
+    }
+
+    private String renderHtml(StatementData data) {
+        String result = "<h1>Statement for " + data.customer + "</h1>\n";
+        result += "<table>\n";
+        result += "<tr><th>play</th><th>seats</th><th>cost</th></tr>";
+        for (Performance perf : data.performances) {
+            result += "<tr>";
+            result += "<td>" + perf.play.name + "</td>";
+            result += "<td>" + perf.audience + "</td>";
+            result += "<td>" + usd(perf.amount) + "</td>";
+            result += "</tr>\n";
+        }
+        result += "</table>";
+
+        result += "<p>Amount owed is <em>" + usd(data.totalAmount()) + "</em></p>\n";
+        result += "<p>You earned <em>" + data.totalVolumeCredits() + "</em> credits</p>\n";
+        return result;
+    }
+
+    private String renderPlainText(StatementData data) {
         String result = "Statement for " + data.customer + '\n';
         for (Performance perf : data.performances) {
             result += ' ' + perf.play.name + ": " + usd(perf.amount) + " (" + perf.audience + " seats)\n";
@@ -49,5 +72,6 @@ public class PerformanceGroup {
         Invoice invoice = new Invoice("BigCo", performances);
 
         System.out.println(new PerformanceGroup().statement(invoice));
+        System.out.println(new PerformanceGroup().htmlStatement(invoice));
     }
 }
