@@ -32,7 +32,7 @@ public class Province {
 
     public void addProducer(Producer arg) {
         producers.add(arg);
-        totalProduction++;
+        totalProduction += arg.production();
     }
 
     public String name() {
