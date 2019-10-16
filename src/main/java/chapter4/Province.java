@@ -95,6 +95,10 @@ public class Province {
         return Math.min(demand(), totalProduction());
     }
 
+    public int profit(){
+        return demandValue() - demandCost();
+    }
+
     public static Map<String, Object> sampleProvinceData() {
         List<Map<String, Object>> producers = Lists.newArrayList();
         Map<String, Object> result = Maps.newHashMap();
