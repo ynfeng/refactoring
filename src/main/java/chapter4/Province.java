@@ -40,7 +40,7 @@ public class Province {
     }
 
     public Set<Producer> producers() {
-        return Collections.unmodifiableSet(producers);
+        return producers;
     }
 
     public int totalProduction() {
@@ -98,6 +98,7 @@ public class Province {
     public int profit(){
         return demandValue() - demandCost();
     }
+
 
     public static Map<String, Object> sampleProvinceData() {
         List<Map<String, Object>> producers = Lists.newArrayList();
