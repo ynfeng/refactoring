@@ -2,19 +2,16 @@ package chapter4;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @author fynwin@gmail.com
  */
 public class Province {
-    private final Set<Producer> producers = Sets.newHashSet();
+    private final List<Producer> producers = Lists.newArrayList();
     private String name;
     private int totalProduction;
     private int demand;
@@ -39,7 +36,7 @@ public class Province {
         return name;
     }
 
-    public Set<Producer> producers() {
+    public List<Producer> producers() {
         return producers;
     }
 
