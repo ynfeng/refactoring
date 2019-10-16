@@ -35,7 +35,7 @@ public class Producer {
     }
 
     public void production(int amount){
-        province.totalProduction(amount - production());
-        production(amount);
+        province.totalProduction(province.totalProduction() + amount - production());
+        production = amount;
     }
 }
